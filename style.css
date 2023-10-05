@@ -1,0 +1,106 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Установка основных стилей для элементов */
+body {
+  font-family: Arial, sans-serif; /* Устанавливаем шрифт по умолчанию для всего документа */
+  line-height: 1.6; /* Устанавливаем высоту строки для текста */
+}
+
+/* Сброс стилей для элементов формы */
+input,
+textarea,
+select,
+button {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  font: inherit;
+}
+
+/* Сброс стилей для списков */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Сброс стилей для заголовков */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+/* Сброс стилей для ссылок */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header {
+  max-width: 100wh;
+  width: 100%;
+  border: 1px solid red;
+}
+footer {
+  height: 100%;
+  border: 1px solid red;
+}
+
+ul {
+  display: flex;
+  justify-content: space-between;
+}
+li {
+  list-style-type: none;
+  background-color: blanchedalmond;
+  border-radius: 20px;
+}
+.container {
+  max-width: 100%;
+  width: inherit;
+  height: 1000px;
+}
+.grid_item {
+  border: 1px solid black;
+}
+.grid_calendar,
+.week {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 15vh 15vh 15vh 15vh;
+  column-gap: 10px;
+  row-gap: 10px;
+}
+.day_week {
+  font-size: 13.6px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.button {
+  border: 1px solid black;
+}
+.button-input {
+  padding: 20px;
+  display: block;
+}
+form {
+  display: flex;
+}
+h1 {
+  text-align: center;
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>
+      Календарь на чистом
+    </title>
+  </head>
+  <body>
+    <style></style>
+    <header>
+      <h1>Календарь</h1>
+      <ul>
+        <li>
+          <<
+        </li>
+        <div><h2>Текущий месяц</h2></div>
+        <div>Поиск</div>
+        <div>Быстрый переход к месяцу/году</div>
+        <li>
+          >>
+        </li>
+      </ul>
+    </header>
+    <div class="container">
+      <div class="week">
+        <ul class="day_week">
+          Пн
+        </ul>
+        <!--Выбор дня и усатновка собыия-->
+        <div class="day_week">Вт</div>
+        <div class="day_week">Ср</div>
+        <div class="day_week">Чт</div>
+        <div class="day_week">Пт</div>
+        <div class="day_week">Сб</div>
+        <div class="day_week">Вс</div>
+      </div>
+      <div class="grid_calendar">
+        <div class="grid_item">1</div>
+        <div class="grid_item">2</div>
+        <div class="grid_item">3</div>
+        <div class="grid_item">4</div>
+        <div class="grid_item">5</div>
+        <div class="grid_item">6</div>
+        <div class="grid_item">7</div>
+        <div class="grid_item">8</div>
+        <div class="grid_item">9</div>
+        <div class="grid_item">10</div>
+        <div class="grid_item">11</div>
+        <div class="grid_item">12</div>
+      </div>
+      <!-- Создать модальное окно редактирования -->
+      <form id="event-form">
+        <div class="button button-input">
+          <label for="create">Создать</label>
+          <input type="button" id="create" required />
+        </div>
+        <div class="button button-input">
+          <label for="edit">Редактировать</label>
+          <input type="button" id="edit" required />
+        </div>
+        <div class="button button-input">
+          <label for="delete">Удалить</label>
+          <input type="button" id="delete" required />
+        </div>
+      </form>
+    </div>
+    <footer>
+      <ul>
+        <li>Локализация</li>
+        <li>Добавить событие</li>
+        <div>
+          <span>выбор маркера</span><input type="color" name="color" id="" />
+        </div>
+      </ul>
+    </footer>
+    <div class="notice-area">
+      <div class="notice-element"></div>
+    </div>
+    <script src="./index.js"></script>
+  </body>
+</html>
