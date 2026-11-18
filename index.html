@@ -1,84 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="./style.css" />
-    <title>
-      Календарь на чистом
-    </title>
+    <title>Календарь</title>
   </head>
   <body>
-    <style></style>
-    <header>
-      <h1>Календарь</h1>
-      <ul>
-        <li>
-          <<
-        </li>
-        <div><h2>Текущий месяц</h2></div>
-        <div>Поиск</div>
-        <div>Быстрый переход к месяцу/году</div>
-        <li>
-          >>
-        </li>
-      </ul>
-    </header>
-    <div class="container">
-      <div class="week">
-        <ul class="day_week">
-          Пн
-        </ul>
-        <!--Выбор дня и усатновка собыия-->
-        <div class="day_week">Вт</div>
-        <div class="day_week">Ср</div>
-        <div class="day_week">Чт</div>
-        <div class="day_week">Пт</div>
-        <div class="day_week">Сб</div>
-        <div class="day_week">Вс</div>
-      </div>
-      <div class="grid_calendar">
-        <div class="grid_item">1</div>
-        <div class="grid_item">2</div>
-        <div class="grid_item">3</div>
-        <div class="grid_item">4</div>
-        <div class="grid_item">5</div>
-        <div class="grid_item">6</div>
-        <div class="grid_item">7</div>
-        <div class="grid_item">8</div>
-        <div class="grid_item">9</div>
-        <div class="grid_item">10</div>
-        <div class="grid_item">11</div>
-        <div class="grid_item">12</div>
-      </div>
-      <!-- Создать модальное окно редактирования -->
-      <form id="event-form">
-        <div class="button button-input">
-          <label for="create">Создать</label>
-          <input type="button" id="create" required />
+    <div class="app">
+      <header class="toolbar">
+        <div class="toolbar__titles">
+          <h1 id="month-title">Месяц</h1>
+          <p id="today-label" class="toolbar__today"></p>
         </div>
-        <div class="button button-input">
-          <label for="edit">Редактировать</label>
-          <input type="button" id="edit" required />
+        <div class="toolbar__nav">
+          <button
+            type="button"
+            id="prev-month"
+            class="btn btn--icon"
+            aria-label="Предыдущий месяц"
+          >
+            ‹
+          </button>
+          <button type="button" id="today-btn" class="btn">
+            Сегодня
+          </button>
+          <button
+            type="button"
+            id="next-month"
+            class="btn btn--icon"
+            aria-label="Следующий месяц"
+          >
+            ›
+          </button>
         </div>
-        <div class="button button-input">
-          <label for="delete">Удалить</label>
-          <input type="button" id="delete" required />
-        </div>
-      </form>
-    </div>
-    <footer>
-      <ul>
-        <li>Локализация</li>
-        <li>Добавить событие</li>
-        <div>
-          <span>выбор маркера</span><input type="color" name="color" id="" />
-        </div>
-      </ul>
-    </footer>
-    <div class="notice-area">
-      <div class="notice-element"></div>
+      </header>
+
+      <main class="layout">
+        <section class="calendar" aria-label="Календарь">
+          <div class="weekdays" aria-hidden="true">
+            <span>Пн</span>
+            <span>Вт</span>
+            <span>Ср</span>
+            <span>Чт</span>
+            <span>Пт</span>
+            <span class="weekday--weekend">Сб</span>
+            <span class="weekday--weekend">Вс</span>
+          </div>
+          <div id="calendar-grid" class="grid" role="grid"></div>
+        </section>
+
+        <aside class="sidebar">
+          <form id="event-form" class="event-form" novalidate>
+            <h2 id="form-title">Новое событие</h2>
+            <label class="field">
+              <span>Название</span>
+              <input
+                type="text"
+                id="event-title"
+                name="title"
+                maxlength="80"
+                placeholder="Например, встреча с командой"
+                required
+              />
+            </label>
+            <div class="field-row">
+              <label class="field">
+                <span>Дата</span>
+                <input type="date" id="event-date" name="date" required />
+              </label>
+              <label class="field">
+                <span>Время</span>
+                <input type="time" id="event-time" name="time" />
+              </label>
+            </div>
+            <label class="field">
+              <span>Описание</span>
+              <textarea
+                id="event-description"
+                name="description"
+                rows="3"
+                maxlength="500"
+                placeholder="Детали события"
+              ></textarea>
+            </label>
+            <p id="form-error" class="form-error" role="alert" hidden></p>
+            <div class="form-actions">
+              <button type="submit" class="btn btn--primary">
+                Сохранить
+              </button>
+              <button
+                type="button"
+                id="delete-event"
+                class="btn btn--danger"
+                hidden
+              >
+                Удалить
+              </button>
+              <button
+                type="button"
+                id="cancel-edit"
+                class="btn btn--ghost"
+                hidden
+              >
+                Отмена
+              </button>
+            </div>
+            <p class="hint">
+              Выберите день в календаре, чтобы добавить событие, или
+              нажмите на событие в ячейке, чтобы изменить его.
+            </p>
+          </form>
+
+          <section class="day-panel" aria-live="polite">
+            <h2 id="selected-day-title">События дня</h2>
+            <ul id="selected-day-list" class="day-list"></ul>
+            <p id="selected-day-empty" class="day-panel__empty">
+              На этот день событий пока нет.
+            </p>
+          </section>
+        </aside>
+      </main>
     </div>
     <script src="./index.js"></script>
   </body>
