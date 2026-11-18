@@ -18,6 +18,9 @@ const MONTHS = [
 const grid = document.getElementById('calendar-grid')
 const monthTitle = document.getElementById('month-title')
 const todayLabel = document.getElementById('today-label')
+const modal = document.getElementById('event-modal')
+const modalTitle = document.getElementById('event-modal-title')
+const closeModalButton = document.getElementById('close-modal')
 const form = document.getElementById('event-form')
 const formTitle = document.getElementById('form-title')
 const titleInput = document.getElementById('event-title')
@@ -27,13 +30,8 @@ const descriptionInput = document.getElementById('event-description')
 const formError = document.getElementById('form-error')
 const deleteButton = document.getElementById('delete-event')
 const cancelButton = document.getElementById('cancel-edit')
-const selectedDayTitle = document.getElementById(
-  'selected-day-title'
-)
 const selectedDayList = document.getElementById('selected-day-list')
-const selectedDayEmpty = document.getElementById(
-  'selected-day-empty'
-)
+const selectedDayEmpty = document.getElementById('selected-day-empty')
 
 const today = new Date()
 
@@ -62,6 +60,10 @@ function parseKey(key) {
 
 function capitalize(text) {
   return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+function formatDay(key, options) {
+  return capitalize(parseKey(key).toLocaleDateString('ru-RU', options))
 }
 
 function loadEvents() {
@@ -123,6 +125,8 @@ function renderGrid() {
   const cellsCount = Math.ceil((offset + daysInMonth) / 7) * 7
   const startDate = new Date(state.year, state.month, 1 - offset)
   const todayKey = dateKey(today)
+
+  grid.style.gridTemplateRows = `repeat(${cellsCount / 7}, minmax(0, 1fr))`
 
   for (let index = 0; index < cellsCount; index++) {
     const date = new Date(
@@ -200,18 +204,16 @@ function renderGrid() {
 
     grid.append(cell)
   }
-
-  renderSelectedDay()
 }
 
 function renderSelectedDay() {
-  const date = parseKey(state.selected)
   const events = eventsForDate(state.selected)
 
-  selectedDayTitle.textContent = `События · ${date.toLocaleDateString(
-    'ru-RU',
-    { day: 'numeric', month: 'long' }
-  )}`
+  modalTitle.textContent = formatDay(state.selected, {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+  })
   selectedDayList.innerHTML = ''
   selectedDayEmpty.hidden = events.length > 0
 
@@ -251,11 +253,22 @@ function renderSelectedDay() {
   }
 }
 
+function openModal() {
+  renderSelectedDay()
+  if (!modal.open) modal.showModal()
+  titleInput.focus()
+}
+
+function closeModal() {
+  if (modal.open) modal.close()
+  resetForm({ keepDate: true })
+}
+
 function selectDate(key) {
   state.selected = key
   resetForm({ keepDate: true })
-  dateInput.value = key
   renderGrid()
+  openModal()
 }
 
 function resetForm({ keepDate = false } = {}) {
@@ -263,7 +276,6 @@ function resetForm({ keepDate = false } = {}) {
   form.reset()
   formTitle.textContent = 'Новое событие'
   deleteButton.hidden = true
-  cancelButton.hidden = true
   formError.hidden = true
   timeInput.value = ''
   dateInput.value = keepDate ? state.selected : ''
@@ -278,10 +290,9 @@ function startEditing(event) {
   timeInput.value = event.time || ''
   descriptionInput.value = event.description || ''
   deleteButton.hidden = false
-  cancelButton.hidden = false
   formError.hidden = true
   renderGrid()
-  titleInput.focus()
+  openModal()
 }
 
 function showError(message) {
@@ -343,6 +354,7 @@ form.addEventListener('submit', (submitEvent) => {
 
   resetForm({ keepDate: true })
   render()
+  closeModal()
 })
 
 deleteButton.addEventListener('click', () => {
@@ -361,10 +373,14 @@ deleteButton.addEventListener('click', () => {
   saveEvents()
   resetForm({ keepDate: true })
   render()
+  closeModal()
 })
 
-cancelButton.addEventListener('click', () => {
-  resetForm({ keepDate: true })
+cancelButton.addEventListener('click', closeModal)
+closeModalButton.addEventListener('click', closeModal)
+
+modal.addEventListener('click', (clickEvent) => {
+  if (clickEvent.target === modal) closeModal()
 })
 
 document.getElementById('prev-month').addEventListener('click', () => {
@@ -375,12 +391,19 @@ document.getElementById('next-month').addEventListener('click', () => {
   shiftMonth(1)
 })
 
+document.getElementById('prev-year').addEventListener('click', () => {
+  shiftYear(-1)
+})
+
+document.getElementById('next-year').addEventListener('click', () => {
+  shiftYear(1)
+})
+
 document.getElementById('today-btn').addEventListener('click', () => {
   state.year = today.getFullYear()
   state.month = today.getMonth()
   state.selected = dateKey(today)
   resetForm({ keepDate: true })
-  dateInput.value = state.selected
   render()
 })
 
@@ -390,9 +413,19 @@ function shiftMonth(delta) {
   state.month = shifted.getMonth()
   state.selected = dateKey(shifted)
   resetForm({ keepDate: true })
-  dateInput.value = state.selected
   render()
 }
 
-resetForm()
+function shiftYear(delta) {
+  state.year += delta
+  const day = Math.min(parseKey(state.selected).getDate(), daysInYearMonth())
+  state.selected = dateKey(new Date(state.year, state.month, day))
+  resetForm({ keepDate: true })
+  render()
+}
+
+function daysInYearMonth() {
+  return new Date(state.year, state.month + 1, 0).getDate()
+}
+
 render()

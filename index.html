@@ -14,115 +14,139 @@
           <h1 id="month-title">Месяц</h1>
           <p id="today-label" class="toolbar__today"></p>
         </div>
-        <div class="toolbar__nav">
+        <div class="toolbar__nav" role="group" aria-label="Навигация">
+          <button
+            type="button"
+            id="prev-year"
+            class="btn btn--icon btn--year"
+            aria-label="Предыдущий год"
+            title="Предыдущий год"
+          >
+            «
+          </button>
           <button
             type="button"
             id="prev-month"
             class="btn btn--icon"
             aria-label="Предыдущий месяц"
+            title="Предыдущий месяц"
           >
             ‹
           </button>
-          <button type="button" id="today-btn" class="btn">
-            Сегодня
-          </button>
+          <button type="button" id="today-btn" class="btn">Сегодня</button>
           <button
             type="button"
             id="next-month"
             class="btn btn--icon"
             aria-label="Следующий месяц"
+            title="Следующий месяц"
           >
             ›
+          </button>
+          <button
+            type="button"
+            id="next-year"
+            class="btn btn--icon btn--year"
+            aria-label="Следующий год"
+            title="Следующий год"
+          >
+            »
           </button>
         </div>
       </header>
 
-      <main class="layout">
-        <section class="calendar" aria-label="Календарь">
-          <div class="weekdays" aria-hidden="true">
-            <span>Пн</span>
-            <span>Вт</span>
-            <span>Ср</span>
-            <span>Чт</span>
-            <span>Пт</span>
-            <span class="weekday--weekend">Сб</span>
-            <span class="weekday--weekend">Вс</span>
-          </div>
-          <div id="calendar-grid" class="grid" role="grid"></div>
-        </section>
-
-        <aside class="sidebar">
-          <form id="event-form" class="event-form" novalidate>
-            <h2 id="form-title">Новое событие</h2>
-            <label class="field">
-              <span>Название</span>
-              <input
-                type="text"
-                id="event-title"
-                name="title"
-                maxlength="80"
-                placeholder="Например, встреча с командой"
-                required
-              />
-            </label>
-            <div class="field-row">
-              <label class="field">
-                <span>Дата</span>
-                <input type="date" id="event-date" name="date" required />
-              </label>
-              <label class="field">
-                <span>Время</span>
-                <input type="time" id="event-time" name="time" />
-              </label>
-            </div>
-            <label class="field">
-              <span>Описание</span>
-              <textarea
-                id="event-description"
-                name="description"
-                rows="3"
-                maxlength="500"
-                placeholder="Детали события"
-              ></textarea>
-            </label>
-            <p id="form-error" class="form-error" role="alert" hidden></p>
-            <div class="form-actions">
-              <button type="submit" class="btn btn--primary">
-                Сохранить
-              </button>
-              <button
-                type="button"
-                id="delete-event"
-                class="btn btn--danger"
-                hidden
-              >
-                Удалить
-              </button>
-              <button
-                type="button"
-                id="cancel-edit"
-                class="btn btn--ghost"
-                hidden
-              >
-                Отмена
-              </button>
-            </div>
-            <p class="hint">
-              Выберите день в календаре, чтобы добавить событие, или
-              нажмите на событие в ячейке, чтобы изменить его.
-            </p>
-          </form>
-
-          <section class="day-panel" aria-live="polite">
-            <h2 id="selected-day-title">События дня</h2>
-            <ul id="selected-day-list" class="day-list"></ul>
-            <p id="selected-day-empty" class="day-panel__empty">
-              На этот день событий пока нет.
-            </p>
-          </section>
-        </aside>
+      <main class="calendar" aria-label="Календарь">
+        <div class="weekdays" aria-hidden="true">
+          <span>Пн</span>
+          <span>Вт</span>
+          <span>Ср</span>
+          <span>Чт</span>
+          <span>Пт</span>
+          <span class="weekday--weekend">Сб</span>
+          <span class="weekday--weekend">Вс</span>
+        </div>
+        <div id="calendar-grid" class="grid" role="grid"></div>
       </main>
     </div>
+
+    <dialog id="event-modal" class="modal" aria-labelledby="event-modal-title">
+      <div class="modal__head">
+        <div>
+          <h2 id="event-modal-title" class="modal__title">День</h2>
+          <p class="modal__subtitle">Нажмите на событие, чтобы изменить его</p>
+        </div>
+        <button
+          type="button"
+          id="close-modal"
+          class="btn btn--icon btn--ghost"
+          aria-label="Закрыть"
+          title="Закрыть"
+        >
+          ×
+        </button>
+      </div>
+
+      <ul id="selected-day-list" class="day-list"></ul>
+      <p id="selected-day-empty" class="day-list__empty">
+        На этот день событий пока нет.
+      </p>
+
+      <form id="event-form" class="event-form" novalidate>
+        <h3 id="form-title" class="event-form__title">Новое событие</h3>
+
+        <label class="field">
+          <span>Название</span>
+          <input
+            type="text"
+            id="event-title"
+            name="title"
+            maxlength="80"
+            placeholder="Например, встреча с командой"
+            required
+          />
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span>Дата</span>
+            <input type="date" id="event-date" name="date" required />
+          </label>
+          <label class="field">
+            <span>Время</span>
+            <input type="time" id="event-time" name="time" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Описание</span>
+          <textarea
+            id="event-description"
+            name="description"
+            rows="2"
+            maxlength="500"
+            placeholder="Детали события"
+          ></textarea>
+        </label>
+
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Сохранить</button>
+          <button
+            type="button"
+            id="delete-event"
+            class="btn btn--danger"
+            hidden
+          >
+            Удалить
+          </button>
+          <button type="button" id="cancel-edit" class="btn btn--ghost">
+            Отмена
+          </button>
+        </div>
+      </form>
+    </dialog>
+
     <script src="./index.js"></script>
   </body>
 </html>
