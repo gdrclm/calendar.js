@@ -301,6 +301,7 @@ ul {
 /* Modal */
 
 .modal {
+  margin: auto;
   width: min(420px, calc(100vw - 24px));
   max-height: min(90dvh, 720px);
   overflow: auto;
@@ -327,7 +328,6 @@ ul {
 .modal__title {
   font-size: 18px;
   font-weight: 600;
-  text-transform: capitalize;
 }
 
 .modal__subtitle {

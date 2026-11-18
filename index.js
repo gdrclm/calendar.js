@@ -62,10 +62,6 @@ function capitalize(text) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-function formatDay(key, options) {
-  return capitalize(parseKey(key).toLocaleDateString('ru-RU', options))
-}
-
 function loadEvents() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -209,11 +205,11 @@ function renderGrid() {
 function renderSelectedDay() {
   const events = eventsForDate(state.selected)
 
-  modalTitle.textContent = formatDay(state.selected, {
-    weekday: 'long',
+  const selectedDate = parseKey(state.selected)
+  modalTitle.textContent = `${selectedDate.toLocaleDateString('ru-RU', {
     day: 'numeric',
     month: 'long'
-  })
+  })}, ${selectedDate.toLocaleDateString('ru-RU', { weekday: 'long' })}`
   selectedDayList.innerHTML = ''
   selectedDayEmpty.hidden = events.length > 0
 
