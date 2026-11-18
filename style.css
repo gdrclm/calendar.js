@@ -504,4 +504,43 @@ ul {
   .event__time {
     display: none;
   }
+
+  .modal {
+    margin: auto auto 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 88dvh;
+    border-radius: 16px 16px 0 0;
+    border-bottom: none;
+    padding: 14px 14px calc(14px + env(safe-area-inset-bottom));
+    overscroll-behavior: contain;
+    animation: sheet-up 0.22s ease-out;
+  }
+
+  .modal__head {
+    margin-bottom: 8px;
+  }
+
+  .modal__title {
+    font-size: 17px;
+  }
+
+  .event-form {
+    gap: 7px;
+  }
+
+  .day-list {
+    margin-bottom: 10px;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(28px);
+    opacity: 0.7;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
 }
